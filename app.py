@@ -11,4 +11,4 @@ def inicio():
     return render_template("index.html", servicios=servicios)
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run()
