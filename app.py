@@ -1,14 +1,14 @@
-from flask import Flask
+from flask import Flask, render_template
 
 app = Flask(__name__)
 
 @app.route("/")
 def inicio():
-    return "Bienvenido a Sosermin – Servicios Mineros Cuenca del Río Mira."
-
-@app.route("/item/<codigo>")
-def item(codigo):
-    return f"Item con código {codigo} registrado correctamente en Sosermin."
+    servicios = [
+        {"codigo": "S01", "nombre": "Mantenimiento"},
+        {"codigo": "S02", "nombre": "Instalación"}
+    ]
+    return render_template("index.html", servicios=servicios)
 
 if __name__ == "__main__":
     app.run(debug=True)
