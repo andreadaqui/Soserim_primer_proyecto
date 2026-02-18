@@ -1,3 +1,4 @@
+import os
 from flask import Flask, render_template
 
 app = Flask(__name__)
@@ -11,4 +12,5 @@ def inicio():
     return render_template("index.html", servicios=servicios)
 
 if __name__ == "__main__":
-    app.run()
+    port = int(os.environ.get("PORT", 5000))  # Toma el puerto que Render asigna
+    app.run(host="0.0.0.0", port=port, debug=True)
