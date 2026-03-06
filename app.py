@@ -2,6 +2,9 @@ import sqlite3
 import os
 from flask import Flask, render_template, request, redirect, url_for
 
+from inventario.inventario import guardar_txt, guardar_json, guardar_csv
+from inventario.inventario import leer_txt, leer_json, leer_csv
+
 app = Flask(__name__)
 DB_NAME = "inventario.db"
 
@@ -91,6 +94,8 @@ def crear_bd():
     conexion.commit()
     conexion.close()
 
+crear_bd()  
+
 
 # ===============================
 # RUTAS
@@ -120,6 +125,12 @@ def agregar():
     nombre = request.form["nombre"]
     cantidad = request.form["cantidad"]
     precio = request.form["precio"]
+
+    producto = Producto(id, nombre, cantidad, precio)
+
+    guardar_txt(producto)
+    guardar_json(producto)
+    guardar_csv(producto)
 
     conexion = sqlite3.connect(DB_NAME)
     cursor = conexion.cursor()
@@ -169,6 +180,8 @@ def buscar():
     resultados = inventario.buscar_por_nombre(nombre)
 
     return render_template("productos.html", productos=resultados)
+
+
 
 
 # ===============================
