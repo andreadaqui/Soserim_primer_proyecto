@@ -1,6 +1,18 @@
 import sqlite3
 import os
 from flask import Flask, render_template, request, redirect, url_for
+import mysql.connector
+
+def obtener_conexion():
+
+    conexion = mysql.connector.connect(
+        host="localhost",
+        user="root",
+        password="",
+        database="forycan"
+    )
+
+    return conexion
 
 from inventario.inventario import guardar_txt, guardar_json, guardar_csv
 from inventario.inventario import leer_txt, leer_json, leer_csv
@@ -111,12 +123,33 @@ def about():
     return render_template("about.html")
 
 
-@app.route("/productos")
-def productos():
-    inventario = Inventario()
-    inventario.cargar_desde_db()
-    lista = inventario.mostrar_todos()
-    return render_template("productos.html", productos=lista)
+@app.route("/datos")
+def ver_datos():
+
+    datos_txt = leer_txt()
+    datos_json = leer_json()
+    datos_csv = leer_csv()
+
+    return render_template(
+        "datos.html",
+        txt=datos_txt,
+        json=datos_json,
+        csv=datos_csv
+    )
+
+@app.route("/clientes")
+def clientes():
+
+    conexion = obtener_conexion()
+    cursor = conexion.cursor()
+
+    cursor.execute("SELECT * FROM cliente")
+
+    clientes = cursor.fetchall()
+
+    conexion.close()
+
+    return render_template("clientes.html", clientes=clientes)
 
 
 @app.route("/agregar", methods=["POST"])
@@ -180,6 +213,7 @@ def buscar():
     resultados = inventario.buscar_por_nombre(nombre)
 
     return render_template("productos.html", productos=resultados)
+
 
 
 

@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>Lista de Clientes</h2>
+
+<table border="1">
+
+<tr>
+<th>ID</th>
+<th>Nombre / Razón Social</th>
+<th>RUC o Cédula</th>
+<th>Dirección</th>
+<th>Teléfono</th>
+</tr>
+
+{% for c in clientes %}
+<tr>
+<td>{{ c[0] }}</td>
+<td>{{ c[1] }}</td>
+<td>{{ c[2] }}</td>
+<td>{{ c[3] }}</td>
+<td>{{ c[4] }}</td>
+</tr>
+{% endfor %}
+
+</table>
+
+{% endblock %}
